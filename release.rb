@@ -15,15 +15,17 @@ def increment_version(version, semver = :patch)
   case semver
   when :major
     major += 1
+    minor = 0
+    patch = 0
   when :minor
     minor += 1
+    patch = 0
   when :patch
     patch += 1
   end
   current_ver = [major, minor, patch].join('.')
-  [VERSION_PREFIX, current_ver].join
 end
 
 client, repo, latest_tag = prepare
 new_tag = increment_version(latest_tag, :patch)
-client.create_release(repo.full_name, new_tag)
+client.create_release(repo.full_name, new_tag, name: new_tag)
